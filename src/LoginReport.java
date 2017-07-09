@@ -8,17 +8,19 @@ import javax.servlet.http.*;
 
 public class LoginReport extends HttpServlet {
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 	try{
-		response.setContentType("report/html");
+		response.setContentType("form/html");
 		PrintWriter out= response.getWriter();
 	try{
 		Class.forName("com.mysql.jdbc.Driver");
-		String jdbcUrl="jdbc:mysql://localhost:3306/report";
+		String jdbc="jdbc:mysql://localhost:3306/emp";
 		Connection con=null;
+		String username="root";
+		String password="root";
 		
-		con= DriverManager.getConnection("jdbcUrl,'root','root'");
+		con= DriverManager.getConnection(jdbc,username,password);
 		Statement st=con.createStatement();
 		
 		String z= request.getParameter("dept");
@@ -44,11 +46,11 @@ public class LoginReport extends HttpServlet {
 		out.println("</table>");
 		
 		}
-	catch(Exception e){
+	catch(ClassNotFoundException e){
 		out.println("class not found");
 	}
 	}
-	catch(Exception SE){
+	catch(SQLException SE){
 		throw new RuntimeException("cannot connect to database", SE);
 	}
 }
